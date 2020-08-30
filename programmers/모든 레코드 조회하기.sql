@@ -1,1 +1,0 @@
-SELECT * from ANIMAL_INS
