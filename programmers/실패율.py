@@ -2,7 +2,7 @@ def solution(N, stages):
 
     lst = []
     number = len(stages)
-    
+
     for i in range(1,N+1) :
         count = stages.count(i)
         if count == 0 :
