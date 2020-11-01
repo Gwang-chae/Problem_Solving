@@ -23,3 +23,20 @@ for i in ask_list:
         print('yes', end=' ')
     else:
         print('no', end=' ')
+
+
+# 계수 정렬
+n = int(input())
+part_list = [0] * 1000001
+
+for i in input().split():
+    part_list[int(i)] = 1
+
+m = int(input())
+ask_list = list(map(int, input().split()))
+
+for j in ask_list:
+    if part_list[j] == 1:
+        print('yes', end=' ')
+    else:
+        print('no', end=' ')
