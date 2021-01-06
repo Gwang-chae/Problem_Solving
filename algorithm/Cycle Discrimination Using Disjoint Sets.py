@@ -1,6 +1,6 @@
 # 특정 원소(x)가 속한 집합 찾기(find)
 def find_parent(parent, x):
-    # 루트 노드가 아니라면, 찾을 때까지 재귀 호출
+    # 루트 노드가 아니라면, 찾을 때까지 재귀 호출    
     if parent[x] != x:
         parent[x] = find_parent(parent, parent[x])
     return parent[x]
@@ -23,19 +23,20 @@ parent = [0] * (v+1)
 for i in range(1, v+1):
     parent[i] = i
 
-# union 연산 수행
+# cycle 여부 체크
+cycle = False
+
 for i in range(e):
     a,b = map(int, input().split())
-    union_parent(parent, a, b)
+    # cycle이 발생한 경우 종료
+    if find_parent(parent, a) == find_parent(parent, b):
+        cycle = True
+        break
+   # cycle이 발생하지 않으면 union 수행
+    else:
+        union_parent(parent, a, b)
 
-# 각 원소가 속한 집합 출력
-print('각 원소가 속한 집합: ', end='')
-for i in range(1, v+1):
-    print(find_parent(parent, i), end=' ')
-
-print()
-
-# 부모 노드 테이블 출력
-print('부모 노드 테이블: ', end='')
-for i in range(1, v+1):
-    print(parent[i], end=' ')
+if cycle:
+    print('Cycle이 발생')
+else:
+    print('Cycle이 발생하지 않음')
