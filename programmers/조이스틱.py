@@ -1,61 +1,55 @@
-name = 'ASDBXOASDBAABSDASA'
-name = list(name)
+def solution(name):
+    name = list(name)
 
-# 위아래 이동
-up_down = 0
-for letter in name:
-    count = min(ord(letter) - ord('A'), ord('Z') - ord(letter) + 1)
-    up_down += count
+    # 위아래 이동
+    up_down = 0
+    for letter in name:
+        count = min(ord(letter) - ord('A'), ord('Z') - ord(letter) + 1)
+        up_down += count
 
-# 좌우 이동
-# 'A'로만 이름이 구성될 경우 좌우 이동은 0
-if name == ['A'] * len(name):
+    # 좌우 이동
     left_right = 0
 
-# 이름에 'A'가 없는 경우 좌우 이동은 len(name) - 1
-if not [x for x in name if x in ['A']]:
-    left_right = len(name) - 1
+    A = ['A'] * len(name)
+    A_checker = [False] * len(name)
 
-# 이름에 'A'가 존재하는 경우
-else:
-    # index 0값을 A로 바꿔주고 시작
-    idx = 0
-    name[0] = "A"
-    left_right = 0
-    while True:
-        # 모든 글자가 'A'가 될 때 while문 종료
-        if name == ['A'] * len(name):
-            break
-        
-        # 오른쪽으로 이동하며 이동값 count
-        # 'A'가 아닌(바꿔야 하는) 지점에서 종료
-        right = 0
-        for i in range(1, len(name[idx:])):
-            right += 1
-            if name[idx+i] != 'A':
-                break
-        
-        # 왼쪽으로 이동하며 이동값 count
-        # 'A'가 아닌(바꿔야 하는) 지점에서 종료
-        left = 0
-        for j in range(1, len(name[idx:])):
-            left += 1
-            if name[idx-j] != 'A':
-                break
-        
-        # 오른쪽 값이 작을 경우 오른쪽 방향을 선택
-        if right <= left:
-            # 오른쪽 방향에서 가장 가까운 'A'가 아닌 지점을 'A'로 변경
-            name[idx+right] = 'A'
-            # 인덱스를 해당 지점으로 변경 다시 loop 시작
-            idx += right
-            left_right += right
-        # 반대의 경우
+    # name중 A가 아닌 부분을 check
+    for i in range(len(name)):
+        if A[i] != name[i]:
+            A_checker[i] = False
         else:
-            # 왼쪽 방향에서 가장 가까운 'A'가 아닌 지점을 'A'로 변경
-            name[idx-left] = 'A'
-            # 인덱스를 해당 지점으로 변경 다시 loop 시작
-            idx = len(name) + 1 - left
-            left_right += left
+            A_checker[i] = True
 
-print(up_down + left_right)
+    idx = 0
+    while True:
+        # A_check에 False가 없으면 종료
+        if((False in A_checker) is False):
+            break
+
+        # 오른쪽, 왼쪽 중에서 'A'가 아닌 가장 가까운 곳 찾기
+        # 찾을 때까지 거리(dist)를 늘려가며 탐색
+        dist = 0
+        while True:
+            if A_checker[idx] == False:
+                break
+
+            # 없을 경우 dist 증가
+            dist += 1
+
+            # 오른쪽 이동
+            if ( A_checker[(idx + dist) % len(name)] == False) :
+                idx = (idx + dist) % len(name)
+
+            # 왼쪽 이동
+            elif ( A_checker[(idx - dist) % len(name)] == False) :
+                idx =  (idx - dist) % len(name)
+
+        # 'A'가 아닌 바꿔야 할 부분을 찾았으면
+        # 'A'로 바꿨다고 표시
+        A_checker[idx] = True
+        # 움직인 거리만큼 left_right를 업데이트
+        left_right += dist
+
+    answer = up_down + left_right
+
+    return answer
