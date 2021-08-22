@@ -6,4 +6,4 @@ def convert(n, base):
     if q == 0:
         return tmp[r]
     else:
-        return conver(q, base) + tmp[r]
+        return convert(q, base) + tmp[r]
